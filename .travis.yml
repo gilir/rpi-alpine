@@ -29,4 +29,5 @@ script:
     if [ "$TRAVIS_BRANCH" == "$TAG" ]; then
     docker tag gilir/rpi-alpine:build gilir/rpi-alpine:$TAG
     docker push gilir/rpi-alpine:$TAG
+    fi
   fi
