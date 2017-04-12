@@ -10,12 +10,16 @@ script:
 # test image
 - docker run gilir/rpi-alpine:build uname -a
 # push image
-#- >
-#  if [ "$TRAVIS_BRANCH" == "master" ]; then
-#    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#    TAG=$(grep "FROM " Dockerfile | sed 's/.*://')
-#    docker tag hypriot/rpi-alpine:build hypriot/rpi-alpine:$TAG
-#    docker tag hypriot/rpi-alpine:build hypriot/rpi-alpine:latest
-#    docker push hypriot/rpi-alpine:$TAG
-#    docker push hypriot/rpi-alpine:latest
-#  fi
+- >
+  TAG=$(grep "FROM " Dockerfile | sed 's/.*://')
+  if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    docker tag gilir/rpi-alpine:build gilir/rpi-alpine:$TAG
+    docker tag gilir/rpi-alpine:build gilir/rpi-alpine:latest
+    docker push gilir/rpi-alpine:$TAG
+    docker push gilir/rpi-alpine:latest
+  else
+    if [ "$TRAVIS_BRANCH" == "$TAG" ]; then
+    docker tag gilir/rpi-alpine:build gilir/rpi-alpine:$TAG
+    docker push gilir/rpi-alpine:$TAG
+  fi
