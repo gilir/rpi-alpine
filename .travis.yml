@@ -17,8 +17,8 @@ script:
 # test image
 - docker run gilir/rpi-alpine:build uname -a
 # push image
+- export TAG=$(grep "FROM " Dockerfile | sed 's/.*://')
 - >
-  TAG=$(grep "FROM " Dockerfile | sed 's/.*://')
   if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
     docker tag gilir/rpi-alpine:build gilir/rpi-alpine:$TAG
